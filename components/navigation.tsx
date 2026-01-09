@@ -18,7 +18,7 @@ import { SquareArrowOutUpRight } from "lucide-react";
 const navActions = [
   {
     label: "GitHub",
-    href: "https://github.com/hugo-bastien/shrtlnk",
+    href: "https://github.com/barebones-sh/shrtlnk",
   },
   {
     label: "Docs",
