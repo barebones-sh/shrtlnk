@@ -23,10 +23,13 @@ CMD ["npx", "prisma", "db", "push"]
 
 # Minimal production image
 FROM base AS runner
+# PORT is overridden by Cloud Run (8080); AUTH_TRUST_HOST lets NextAuth
+# accept the host forwarded by the platform's proxy
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1 \
     PORT=3000 \
-    HOSTNAME=0.0.0.0
+    HOSTNAME=0.0.0.0 \
+    AUTH_TRUST_HOST=true
 
 COPY --from=builder --chown=node:node /app/public ./public
 COPY --from=builder --chown=node:node /app/.next/standalone ./

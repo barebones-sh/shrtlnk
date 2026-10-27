@@ -58,6 +58,23 @@ Minimal URL shortener that converts long links into clean, shareable URLs.
 
    Your production server will respond on the port configured by your host (locally that defaults to `http://localhost:3000`).
 
+### Docker
+
+Copy `.env.example` to `.env`, set `AUTH_SECRET`, then run the full stack (Postgres, schema sync, app):
+
+```bash
+docker compose up --build
+```
+
+### Google Cloud Run
+
+Point Cloud Build (via Developer Connect) at the `Dockerfile`; its default target is the production image. On the Cloud Run service:
+
+- Secret Manager: `AUTH_SECRET` (and `DATABASE_URL` once a database is attached)
+- Env vars: `AUTH_URL=https://shrtlnk.ch`
+
+`PORT` is provided by Cloud Run and `AUTH_TRUST_HOST=true` is baked into the image. When proxying through Cloudflare, use SSL mode **Full (strict)**.
+
 ## Environment Variables
 
 | Variable | Required | Description |
@@ -66,6 +83,10 @@ Minimal URL shortener that converts long links into clean, shareable URLs.
 | `AUTH_URL` | ⚠️ (prod) | Public base URL of your deployment. Needed when deploying NextAuth (e.g. `https://shrtlnk.example.com`). |
 | `DATABASE_URL` | ✅ | Primary Postgres connection string used by Prisma. Example: `postgresql://USER:PASSWORD@HOST:5432/DB?schema=public`. |
 | `DIRECT_URL` | ⚠️ | Optional direct connection (e.g. for connection pooling providers such as Prisma Accelerate or Supabase). Set it if your host supplies a different “direct” URL. |
+| `AUTH_TRUST_HOST` | — | Trust the host forwarded by a reverse proxy. Set to `true` in the Docker image. |
+| `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB` / `APP_PORT` | — | `docker compose` only; defaults to `shrtlnk` and port `3000`. |
+
+See `.env.example` for a template.
 
 Restart `npm run dev` after changing secrets so Next.js picks them up.
 

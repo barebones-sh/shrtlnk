@@ -27,11 +27,17 @@ Common types: `feat`, `fix`, `chore`, `docs`, `style`, `refactor`, `test`, `perf
 
 ## Environment Setup
 
-Required env vars (see `.env`):
+Env vars (template in `.env.example`):
 
 - `DATABASE_URL` — PostgreSQL connection string
 - `AUTH_SECRET` — NextAuth secret (`openssl rand -base64 32`)
+- `AUTH_URL` — Public base URL (production: `https://shrtlnk.ch`)
 - `DIRECT_URL` — Optional direct DB connection for pooling (e.g., Supabase)
+- `AUTH_TRUST_HOST` — Set to `true` in the Docker image (Cloud Run sits behind a proxy)
+
+## Deployment
+
+Built from `Dockerfile` (multi-stage, Next.js standalone output) and deployed to Cloud Run via Developer Connect. `docker-compose.yml` runs the stack locally with Postgres.
 
 ## Architecture
 
